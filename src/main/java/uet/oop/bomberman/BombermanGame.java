@@ -23,13 +23,18 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 15;
     public static final int HEIGHT = 14;
-    
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
     public static boolean isPause = false;
+
+    public static Bomber player;
+    public static int typeEvent = 0;
+    public static int frame;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class,args);
     }
@@ -46,10 +51,44 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
 
+        //test
+
+        player = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()){
+                case UP:
+                    if(player.checkRun(stillObjects, player.getX()/32 + (player.getY()/32 - 1) * 31)){
+                        typeEvent = 1;
+                    }
+                    break;
+                case DOWN:
+                    if(player.checkRun(stillObjects, player.getX()/32 + (player.getY()/32 + 1) * 31)){
+                        typeEvent = 2;
+                    }
+                    break;
+                case RIGHT:
+                    if(player.checkRun(stillObjects, player.getX()/32 + 1 + (player.getY()/32) * 31)){
+                        typeEvent = 3;
+                    }
+                    break;
+                case LEFT:
+                    if(player.checkRun(stillObjects, player.getX()/32 - 1 + (player.getY()/32) * 31)){
+                        typeEvent = 4;
+                    }
+                    break;
+                /*case SPACE:
+                    Bomb.putBomb();
+                    break;
+                case P:
+                    isPause = !isPause;
+                    break;*/
+            }
+        });
 
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
+
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -62,10 +101,12 @@ public class BombermanGame extends Application {
 
         createMap();
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+        entities.add(player);
     }
 
+    public void print(int time){
+        System.out.println(time);
+    }
     public void createMap() {
         String path = "C:/Users/FPT/IdeaProjects/untitled4/src/main/resources/map/createMap.txt";
         File fileInput = new File(path);
@@ -100,6 +141,32 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        switch(typeEvent){
+            case 1:
+                player.setY(player.getY()-2);
+                player.UP();
+                ++frame;
+                break;
+            case 2:
+                player.setY(player.getY()+2);
+                player.DOWN();
+                ++frame;
+                break;
+            case 3:
+                player.setX(player.getX()+2);
+                player.RIGHT();
+                ++frame;
+                break;
+            case 4:
+                player.setX(player.getX()-2);
+                player.LEFT();
+                ++frame;
+                break;
+        }
+        if(frame == 16 && typeEvent != 0){
+            typeEvent = 0;
+            frame = 0;
+        }
     }
 
     public void render() {
