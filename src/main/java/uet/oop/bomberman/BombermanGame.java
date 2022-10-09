@@ -34,6 +34,7 @@ public class BombermanGame extends Application {
     public static Bomber player;
     public static int typeEvent = 0;
     public static int frame;
+    public static List<Bomb> bom = new ArrayList<>();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class,args);
@@ -76,10 +77,12 @@ public class BombermanGame extends Application {
                         typeEvent = 4;
                     }
                     break;
-                /*case SPACE:
-                    Bomb.putBomb();
+                case SPACE:
+                    Bomb newBom = new Bomb(player.getX()/32, player.getY()/32, Sprite.bomb.getFxImage(),entities);
+                    entities.add(newBom);
+                    bom.add(newBom);
                     break;
-                case P:
+                /*case P:
                     isPause = !isPause;
                     break;*/
             }
@@ -108,7 +111,7 @@ public class BombermanGame extends Application {
         System.out.println(time);
     }
     public void createMap() {
-        String path = "C:/Users/FPT/IdeaProjects/untitled4/src/main/resources/map/createMap.txt";
+        String path = "E:/intellij/untitled4/src/main/resources/map/createMap.txt";
         File fileInput = new File(path);
         Scanner in = null;
         try {
@@ -141,6 +144,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        /** bomber run */
         switch(typeEvent){
             case 1:
                 player.setY(player.getY()-2);
@@ -166,6 +170,13 @@ public class BombermanGame extends Application {
         if(frame == 16 && typeEvent != 0){
             typeEvent = 0;
             frame = 0;
+        }
+        if(!bom.isEmpty()){
+            for(int i = 0; i < bom.size(); ++i){
+                if(bom.get(i).isBomb()){
+                    bom.get(i).explosion(entities,bom, stillObjects);
+                }
+            }
         }
     }
 
