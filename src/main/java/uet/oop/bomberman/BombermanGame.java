@@ -20,7 +20,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 15;
     public static final int HEIGHT = 14;
 
