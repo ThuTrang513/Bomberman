@@ -8,6 +8,7 @@ import java.util.List;
 public class Bomb extends Entity{
     private long timeSetBomb;
     private boolean isBomb = false;
+
     private long timer;
     private int isSwap = 1;
     private int isSwap2 = 1;
@@ -46,6 +47,10 @@ public class Bomb extends Entity{
     @Override
     public void setY(int y) {
         super.setY(y);
+    }
+
+    public boolean isEx() {
+        return isEx;
     }
 
     public void init(int x, int y){
@@ -203,7 +208,7 @@ public class Bomb extends Entity{
         Entity object = new Grass(xVal/32, yVal/32, Sprite.grass.getFxImage());
         //stillObjects.remove(xVal/32 + (yVal/32)*31);
         //stillObjects.add(xVal/32 + (yVal/32)*31);
-        //stillObjects.set(xVal/32 + (yVal/32)*31,object);
+        stillObjects.set(xVal/32 + (yVal/32)*31,object);
     }
     public void setGrass(List stillObjects){
         if(checkBrick(stillObjects, x/32 + (y/32 - 1) * 31)) {
@@ -213,10 +218,10 @@ public class Bomb extends Entity{
             changeImageMap(stillObjects,x,y+32);
         }
         if(checkBrick(stillObjects, x/32 - 1 + (y/32) * 31)) {
-            changeImageMap(stillObjects,x-1,y);
+            changeImageMap(stillObjects,x-32,y);
         }
         if(checkBrick(stillObjects, x/32 + 1 + (y/32) * 31)) {
-            changeImageMap(stillObjects,x+1,y);
+            changeImageMap(stillObjects,x+32,y);
         }
     }
     public void explosion(List entities, List bomb,List stillObjects){
@@ -244,6 +249,7 @@ public class Bomb extends Entity{
                 hasEx = false;
                 bomb.remove(this);
                 isBomb = false;
+                isEx = false;
             }
         }
     }

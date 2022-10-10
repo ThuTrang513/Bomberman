@@ -101,6 +101,15 @@ public class Bomber extends Entity {
             }
         }
     }
+
+    /*public void bomber_died(Bomb bom){
+        if(bom.isEx()){
+            if((x >= bom.getX() - 32 && x <= bom.getX() + 32 && y == bom.getY())
+                    || (x == bom.getX() && y <= bom.getY() + 32 && y >= bom.getY() - 32) ){
+
+            }
+        }
+    }*/
     @Override
     public void update(){
 
