@@ -21,11 +21,11 @@ import java.util.logging.Logger;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = 15;
-    public static final int HEIGHT = 14;
+    public static final int WIDTH = 20;
+    public static final int HEIGHT = 15;
 
     private GraphicsContext gc;
-    private Canvas canvas;
+    public static Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class BombermanGame extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws FileNotFoundException {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -50,7 +50,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         // Tao scene
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(Menu.createMenu(stage));
 
         //test
 
@@ -89,8 +89,6 @@ public class BombermanGame extends Application {
         });
 
         // Them scene vao stage
-        stage.setScene(scene);
-        stage.show();
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -107,6 +105,10 @@ public class BombermanGame extends Application {
         createMap();
 
         entities.add(player);
+        stage.setScene(scene);
+        stage.show();
+        stage.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+        stage.setWidth(Sprite.SCALED_SIZE * WIDTH);
     }
 
     public void print(int time){
