@@ -97,7 +97,9 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 render();
-                update();
+                if(!isPause){
+                    update();
+                }
             }
         };
         timer.start();
@@ -175,6 +177,8 @@ public class BombermanGame extends Application {
             for(int i = 0; i < bom.size(); ++i){
                 if(bom.get(i).isBomb()){
                     bom.get(i).explosion(entities,bom, stillObjects);
+                    isPause = player.bomber_died(bom.get(i));
+                    System.out.println(isPause);
                 }
             }
         }

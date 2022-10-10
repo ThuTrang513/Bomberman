@@ -8,6 +8,7 @@ import java.util.List;
 public class Bomber extends Entity {
     private int countToRun = 0;
     private int swap = 1;
+    private int died = 1;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
@@ -101,15 +102,32 @@ public class Bomber extends Entity {
             }
         }
     }
-
-    /*public void bomber_died(Bomb bom){
+    private void setDiedFame(){
+        if(died == 1){
+            super.setImg(Sprite.player_dead1.getFxImage());
+            died = 2;
+        }
+        else if(died == 2){
+            super.setImg(Sprite.player_dead2.getFxImage());
+            died = 3;
+        }
+        else{
+            super.setImg(Sprite.player_dead3.getFxImage());
+            died = 1;
+        }
+    }
+    public boolean bomber_died(Bomb bom){
         if(bom.isEx()){
             if((x >= bom.getX() - 32 && x <= bom.getX() + 32 && y == bom.getY())
-                    || (x == bom.getX() && y <= bom.getY() + 32 && y >= bom.getY() - 32) ){
-
+                    || (x == bom.getX() && y <= bom.getY() + 32 && y >= bom.getY() - 32)){
+                setDiedFame();
+                if(!bom.isEx()){
+                    return true;
+                }
             }
         }
-    }*/
+        return false;
+    }
     @Override
     public void update(){
 
