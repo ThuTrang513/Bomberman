@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import uet.oop.bomberman.Level.Level1;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -51,9 +52,8 @@ public class Menu {
         grid.getChildren().addAll(menu,help,exit);
 
         menu.setOnMouseClicked(e->{
-            //createGame(primaryStage);
+            new Level1();
             grid.getChildren().add(canvas);
-            //new level1();
 
         });
         sound.setOnMouseClicked(e->{

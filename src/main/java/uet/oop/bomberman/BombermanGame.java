@@ -27,8 +27,8 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     public static Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
-
+    public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> enermy = new ArrayList<>();
     public static boolean isPause = false;
 
     public static Bomber player;
@@ -102,7 +102,6 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        createMap();
 
         entities.add(player);
         stage.setScene(scene);
@@ -114,39 +113,10 @@ public class BombermanGame extends Application {
     public void print(int time){
         System.out.println(time);
     }
-    public void createMap() {
-        String path = "E:/intellij/untitled4/src/main/resources/map/createMap.txt";
-        File fileInput = new File(path);
-        Scanner in = null;
-        try {
-            in = new Scanner(fileInput);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        int i = 0;
-        while(in.hasNextLine()) {
-            String map  = in.nextLine();
-            Entity object = null;
-            for (int j = 0; j < 31; ++j){
-                if (map.charAt(j)== '#') {
-                    object = new Wall(j, i, Sprite.wall.getFxImage());
-                }
-                else if(map.charAt(j) == '*') {
-                    object = new Brick(j, i, Sprite.brick.getFxImage());
-                }
-                /*else if(map.charAt(j) == 'x') {
-                    object = new Portal(j, i, Sprite.portal.getFxImage());
-                }*/
-                else{
-                    object = new Grass(j, i, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
-            }
-            ++i;
-        }
-    }
+
 
     public void update() {
+        enermy.forEach(Entity::update);
         entities.forEach(Entity::update);
         /** bomber run */
         switch(typeEvent){
@@ -190,5 +160,6 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        enermy.forEach(g->g.render(gc));
     }
 }
