@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,14 +22,15 @@ import java.util.logging.Logger;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 14;
 
     private GraphicsContext gc;
     public static Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> enermy = new ArrayList<>();
+    public static List<Entity> item=new ArrayList<>();
     public static boolean isPause = false;
 
     public static Bomber player;
@@ -48,7 +50,6 @@ public class BombermanGame extends Application {
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
-
         // Tao scene
         Scene scene = new Scene(Menu.createMenu(stage));
 
@@ -102,12 +103,11 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-
         entities.add(player);
         stage.setScene(scene);
         stage.show();
-        stage.setHeight(Sprite.SCALED_SIZE * HEIGHT);
-        stage.setWidth(Sprite.SCALED_SIZE * WIDTH);
+        stage.setHeight(Sprite.SCALED_SIZE * HEIGHT+3);
+        stage.setWidth(Sprite.SCALED_SIZE * WIDTH+8);
     }
 
     public void print(int time){
@@ -117,6 +117,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         enermy.forEach(Entity::update);
+        item.forEach(Entity::update);
         entities.forEach(Entity::update);
         /** bomber run */
         switch(typeEvent){
@@ -146,7 +147,7 @@ public class BombermanGame extends Application {
             frame = 0;
         }
         if(!bom.isEmpty()){
-            for(int i = 0; i < bom.size(); ++i){
+            for(int i = 0; i < bom.size(); i++){
                 if(bom.get(i).isBomb()){
                     bom.get(i).explosion(entities,bom, stillObjects);
                     isPause = player.bomber_died(bom.get(i));
@@ -161,5 +162,6 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
         enermy.forEach(g->g.render(gc));
+        item.forEach(g->g.render(gc));
     }
 }

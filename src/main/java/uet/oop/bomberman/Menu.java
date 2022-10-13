@@ -16,11 +16,15 @@ public class Menu {
 
     public static GridPane createMenu(Stage primaryStage) throws FileNotFoundException {
         GridPane grid = new GridPane();
-
+        grid.setMaxWidth(10);
+        grid.setMaxHeight(30);
+        grid.setPrefWidth(40);
+        grid.setPrefHeight(60);
+grid.setMinHeight(10);
 
         ImageView backGround = new ImageView(new Image(new FileInputStream("E:/Github/Bomberman/src/main/resources/textures/main.png")));
-
-        grid.getChildren().addAll(backGround);
+        grid.add(backGround,0,0);
+        //grid.getChildren().add(backGround);
 
         Image newGame = new Image("E:/Github/Bomberman/src/main/resources/textures/play.png");
         ImageView menu = new ImageView(newGame);
@@ -53,8 +57,8 @@ public class Menu {
 
         menu.setOnMouseClicked(e->{
             new Level1();
+            grid.getChildren().removeAll(backGround,exit,help);
             grid.getChildren().add(canvas);
-
         });
         sound.setOnMouseClicked(e->{
             //sound=true;

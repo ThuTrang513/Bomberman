@@ -5,40 +5,63 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.graphics.Sprite;
 
-import static uet.oop.bomberman.BombermanGame.player;
-import static uet.oop.bomberman.BombermanGame.stillObjects;
+import static uet.oop.bomberman.BombermanGame.*;
 
 
-public class Oneal extends Entity {
-    int cntCircle=0,right=0,left=0;
+public class Oneal extends Enermy {
+    int cntCircle=0,right=0,left=0,cntToDie=0;
     boolean ok=false,ud=false,rl=false;
     public Oneal(int x, int y, Image image){
         super(x,y,image);
     }
     @Override
     public void update() {
-        if (player.getX()==x){
-            if (player.getY()-y<0) {
-                ok=true;
+        if (!isDead) {
+            if (player.getX() == x) {
+                if (player.getY() - y < 0) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
+                upDown();
+                cntCircle = 3;
+            } else if (player.getY() == y) {
+                if (player.getX() - x < 0) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
+                rightLeft();
+                cntCircle = 0;
             } else {
-                ok=false;
-            }
-            upDown();
-            cntCircle=3;
-        } else if (player.getY()==y){
-            if (player.getX()-x<0){
-                ok=true;
-            }
-            else {
-                ok=false;
-            }
-            rightLeft();
-            cntCircle=0;
-        } else {
 
-            ranRun(cntCircle);
+                ranRun(cntCircle);
+            }
+
+            colissBomber();
+            colissBom();
+        } else setDiedFame();
+    }
+
+    public void setDiedFame() {
+        if (cntToDie<4) {
+            setImg(Sprite.oneal_dead.getFxImage());
+            cntToDie++;
+        }
+        else if (cntToDie<8){
+            setImg(Sprite.mob_dead1.getFxImage());
+            cntToDie++;
+        } else if (cntToDie<12){
+            setImg(Sprite.mob_dead2.getFxImage());
+            cntToDie++;
+        } else if (cntToDie<15){
+            setImg(Sprite.mob_dead3.getFxImage());
+            cntToDie++;
+        } else{
+            enermy.remove(this);
         }
     }
+
     public void ranRun(int cnt){
         if (cntCircle>6) cntCircle=0;
         if (cntCircle>3) {

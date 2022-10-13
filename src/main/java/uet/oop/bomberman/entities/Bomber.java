@@ -102,7 +102,7 @@ public class Bomber extends Entity {
             }
         }
     }
-    private void setDiedFame(){
+    public void setDiedFame(){
         if(died == 1){
             super.setImg(Sprite.player_dead1.getFxImage());
             died = 2;
