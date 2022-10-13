@@ -6,15 +6,20 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
+import javax.sound.sampled.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,13 +48,12 @@ public class BombermanGame extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws FileNotFoundException {
+    public void start(Stage stage) throws IOException {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        // Tao root container
-        Group root = new Group();
-        root.getChildren().add(canvas);
+
+
         // Tao scene
         Scene scene = new Scene(Menu.createMenu(stage));
 
@@ -106,8 +110,8 @@ public class BombermanGame extends Application {
         entities.add(player);
         stage.setScene(scene);
         stage.show();
-        stage.setHeight(Sprite.SCALED_SIZE * HEIGHT+3);
-        stage.setWidth(Sprite.SCALED_SIZE * WIDTH+8);
+        stage.setHeight(Sprite.SCALED_SIZE * HEIGHT+30);
+        stage.setWidth(Sprite.SCALED_SIZE * WIDTH+12);
     }
 
     public void print(int time){

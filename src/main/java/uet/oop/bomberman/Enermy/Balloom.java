@@ -87,13 +87,13 @@ public class Balloom extends Enermy {
             if(!ok) cntCircle++;
         }
     }
-    boolean checkUL(int x,int y){
-        return stillObjects.get((y / 32)*31  + x/32) instanceof Grass;
+    public boolean checkUL(int x,int y){
+        return stillObjects.get((y / 32)*31  + x/32) instanceof Grass ;
     }
     boolean checkD(int x,int y){
-        return stillObjects.get((y / 32+1)*31  + x/32) instanceof Grass;
+        return stillObjects.get((y / 32+1)*31  + x/32) instanceof Grass ;
     }
     public boolean checkR(int x,int y){
-        return stillObjects.get((y / 32)*31  + x/32+1) instanceof Grass;
+        return stillObjects.get((y / 32)*31  + x/32+1) instanceof Grass ;
     }
 }

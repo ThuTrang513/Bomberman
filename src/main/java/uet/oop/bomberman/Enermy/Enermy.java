@@ -25,5 +25,6 @@ public abstract class Enermy extends Entity {
             isPause=true;
         }
     }
+
     public abstract void setDiedFame();
 }
