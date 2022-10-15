@@ -1,8 +1,7 @@
 package uet.oop.bomberman.Enermy;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.Menu;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
@@ -107,13 +106,5 @@ public class Oneal extends Enermy {
             if(!ok) cntCircle++;
         }
     }
-    boolean checkUL(int x,int y){
-        return stillObjects.get((y / 32)*31  + x/32) instanceof Grass;
-    }
-    boolean checkD(int x,int y){
-        return stillObjects.get((y / 32+1)*31  + x/32) instanceof Grass;
-    }
-    public boolean checkR(int x,int y){
-        return stillObjects.get((y / 32)*31  + x/32+1) instanceof Grass;
-    }
+
 }

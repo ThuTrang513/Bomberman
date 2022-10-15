@@ -1,9 +1,12 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.List;
+
+import static uet.oop.bomberman.BombermanGame.isPause;
 
 public class Bomber extends Entity {
     private int countToRun = 0;
@@ -114,19 +117,20 @@ public class Bomber extends Entity {
         else{
             super.setImg(Sprite.player_dead3.getFxImage());
             died = 1;
+            BombermanGame.isPause=true;
         }
     }
-    public boolean bomber_died(Bomb bom){
+    public void bomber_died(Bomb bom){
         if(bom.isEx()){
             if((x >= bom.getX() - 32 && x <= bom.getX() + 32 && y == bom.getY())
                     || (x == bom.getX() && y <= bom.getY() + 32 && y >= bom.getY() - 32)){
                 setDiedFame();
-                if(!bom.isEx()){
+                /*if(!bom.isEx()){
                     return true;
-                }
+                }*/
             }
         }
-        return false;
+        //return false;
     }
     @Override
     public void update(){

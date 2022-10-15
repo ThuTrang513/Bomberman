@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import uet.oop.bomberman.Level.Level1;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -25,11 +26,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import static uet.oop.bomberman.Media.Media.playSound;
+
+
 public class BombermanGame extends Application {
 
     public static final int WIDTH = 31;
     public static final int HEIGHT = 14;
-
     private GraphicsContext gc;
     public static Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -52,13 +55,10 @@ public class BombermanGame extends Application {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-
-
         // Tao scene
         Scene scene = new Scene(Menu.createMenu(stage));
-
+        stage.setScene(scene);
         //test
-
         player = new Bomber(1, 1, Sprite.player_right.getFxImage());
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()){
@@ -93,9 +93,6 @@ public class BombermanGame extends Application {
             }
         });
 
-        // Them scene vao stage
-
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -108,10 +105,10 @@ public class BombermanGame extends Application {
         timer.start();
 
         entities.add(player);
-        stage.setScene(scene);
         stage.show();
-        stage.setHeight(Sprite.SCALED_SIZE * HEIGHT+30);
-        stage.setWidth(Sprite.SCALED_SIZE * WIDTH+12);
+
+        //stage.setHeight(Sprite.SCALED_SIZE * HEIGHT+30);
+        //stage.setWidth(Sprite.SCALED_SIZE * WIDTH+12);
     }
 
     public void print(int time){
@@ -154,11 +151,13 @@ public class BombermanGame extends Application {
             for(int i = 0; i < bom.size(); i++){
                 if(bom.get(i).isBomb()){
                     bom.get(i).explosion(entities,bom, stillObjects);
-                    isPause = player.bomber_died(bom.get(i));
-                    System.out.println(isPause);
+                    player.bomber_died(bom.get(i));
                 }
             }
         }
+        // set text
+        Menu.ener.setText("Enermy: "+enermy.size());
+        //if (isPause) Menu.gameover();
     }
 
     public void render() {

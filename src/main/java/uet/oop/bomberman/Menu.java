@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.Level.Level1;
+import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,20 +19,22 @@ import static uet.oop.bomberman.BombermanGame.canvas;
 
 public class Menu {
 
+    public static Label score = new Label("Score: ");
+    public static Label time = new Label("Time: ");
+    public static Label bomNum = new Label("Bom ");
+
+    public static Label ener = new Label("Enermy: ");
+    public static Label level = new Label("Level");
+    public static ImageView black;
+    public static ImageView menu;
+    public static GridPane grid = new GridPane();
     public static GridPane createMenu(Stage primaryStage) throws FileNotFoundException {
-        GridPane grid = new GridPane();
-        grid.setMaxWidth(10);
-        grid.setMaxHeight(30);
-        grid.setPrefWidth(40);
-        grid.setPrefHeight(60);
-grid.setMinHeight(10);
 
         ImageView backGround = new ImageView(new Image(new FileInputStream("E:/Github/Bomberman/src/main/resources/textures/main.png")));
         grid.add(backGround,0,0);
         //grid.getChildren().add(backGround);
 
         Image newGame = new Image("E:/Github/Bomberman/src/main/resources/textures/play.png");
-        ImageView menu = new ImageView(newGame);
         menu = new ImageView(newGame);
         menu.setTranslateX(260);
         menu.setTranslateY(-100);
@@ -59,12 +62,17 @@ grid.setMinHeight(10);
         sound.setScaleY(0.5);
         grid.getChildren().addAll(menu,help,exit);
 
-        ImageView black= new ImageView("E:/Github/Bomberman/src/main/resources/images/blackBackground.png");
+        black= new ImageView("E:/Github/Bomberman/src/main/resources/images/blackBackground.png");
 
+        grid.setMaxWidth(Sprite.SCALED_SIZE*WIDTH);
+        grid.setMaxHeight(Sprite.SCALED_SIZE*HEIGHT);
+        grid.setMinWidth(40);
+        //grid.setPrefHeight(60);
+        grid.setMinHeight(10);
 
         menu.setOnMouseClicked(e->{
             new Level1();
-            grid.getChildren().removeAll(backGround,exit,help);
+            //grid.getChildren().removeAll(backGround,exit,help);
             //grid.add(black,0,0);
             grid.getChildren().add(black);
             grid.getChildren().add(canvas);
@@ -91,47 +99,52 @@ grid.setMinHeight(10);
         exit.setOnMouseClicked(e->{
             primaryStage.close();
         });
+
         return grid;
     }
 
     private static void showInfo(GridPane grid) {
         //grid.getChildren().add()
-        Label score = new Label("Score: ");
         score.setFont(new Font("Arial", 30));
         score.setTextFill(Color.web("#FFFFFF"));
         score.setTranslateX(0);
         score.setTranslateY(-242);
 
-        Label level = new Label("Level");
+
         level.setFont(new Font("Arial", 30));
         level.setTextFill(Color.web("#FFFFFF"));
         level.setTranslateX(160);
         level.setTranslateY(-242);
 
-        Label ener = new Label("Enermy");
         ener.setFont(new Font("Arial", 30));
         ener.setTextFill(Color.web("#FFFFFF"));
         ener.setTranslateX(320);
         ener.setTranslateY(-242);
 
 
-        Label bomNum = new Label("Bom");
         bomNum.setFont(new Font("Arial", 30));
         bomNum.setTextFill(Color.web("#FFFFFF"));
         bomNum.setTranslateX(500);
         bomNum.setTranslateY(-242);
 
-        Label time = new Label("Time: ");
         time.setFont(new Font("Arial", 30));
         time.setTextFill(Color.web("#FFFFFF"));
         time.setTranslateX(660);
         time.setTranslateY(-242);
         grid.getChildren().addAll(score,level,ener,bomNum,time);
     }
+    public static void gameover() {
+        //grid.getChildren().removeAll(canvas,black,menu);
+        ImageView x= new ImageView("E:/Github/Bomberman/src/main/resources/images/gameOver.png");
 
-    private static void createGame(Stage stage) {
+        int cnt=10; grid.getChildren().add(x);
+        //new Level1();
+        while (cnt--!=0){
 
+            if (cnt==0) {
+                grid.getChildren().remove(x);
+                new Level1(); isPause=false;
+            }
+        }
     }
-
-
 }

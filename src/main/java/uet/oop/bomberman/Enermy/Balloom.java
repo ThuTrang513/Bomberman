@@ -1,6 +1,7 @@
 package uet.oop.bomberman.Enermy;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.Menu;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -40,7 +41,7 @@ public class Balloom extends Enermy {
     }
 
 
-    public void ranRun(int cnt) {
+    private void ranRun(int cnt) {
         if (!isDead) {
             if (cntCircle == 6) cntCircle = 0;
             if (cntCircle > 3) {
@@ -86,14 +87,5 @@ public class Balloom extends Enermy {
             else {ok=false; y++;}
             if(!ok) cntCircle++;
         }
-    }
-    public boolean checkUL(int x,int y){
-        return stillObjects.get((y / 32)*31  + x/32) instanceof Grass ;
-    }
-    boolean checkD(int x,int y){
-        return stillObjects.get((y / 32+1)*31  + x/32) instanceof Grass ;
-    }
-    public boolean checkR(int x,int y){
-        return stillObjects.get((y / 32)*31  + x/32+1) instanceof Grass ;
     }
 }
