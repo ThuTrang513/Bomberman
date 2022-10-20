@@ -38,14 +38,15 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
     public static List<Entity> enermy = new ArrayList<>();
-    public static List<Entity> item=new ArrayList<>();
+    //public static List<Entity> item=new ArrayList<>();
     public static boolean isPause = false;
 
     public static Bomber player;
     public static int typeEvent = 0;
     public static int frame;
     public static List<Bomb> bom = new ArrayList<>();
-
+    public static int bombNum = 1;
+    private int hasBomb  = 0;
     public static void main(String[] args) {
         Application.launch(BombermanGame.class,args);
     }
@@ -83,9 +84,13 @@ public class BombermanGame extends Application {
                     }
                     break;
                 case SPACE:
-                    Bomb newBom = new Bomb(player.getX()/32, player.getY()/32, Sprite.bomb.getFxImage(),entities);
-                    entities.add(newBom);
-                    bom.add(newBom);
+                    hasBomb = bom.size();
+                    if(hasBomb < bombNum) {
+                        Bomb newBom = new Bomb(player.getX()/32, player.getY()/32, Sprite.bomb.getFxImage(),entities);
+                        entities.add(newBom);
+                        bom.add(newBom);
+                        ++hasBomb;
+                    }
                     break;
                 /*case P:
                     isPause = !isPause;
@@ -118,34 +123,35 @@ public class BombermanGame extends Application {
 
     public void update() {
         enermy.forEach(Entity::update);
-        item.forEach(Entity::update);
+        //item.forEach(Entity::update);
         entities.forEach(Entity::update);
         /** bomber run */
         switch(typeEvent){
             case 1:
-                player.setY(player.getY()-2);
+                player.setY(player.getY()-player.getStep());
                 player.UP();
                 ++frame;
                 break;
             case 2:
-                player.setY(player.getY()+2);
+                player.setY(player.getY()+player.getStep());
                 player.DOWN();
                 ++frame;
                 break;
             case 3:
-                player.setX(player.getX()+2);
+                player.setX(player.getX()+player.getStep());
                 player.RIGHT();
                 ++frame;
                 break;
             case 4:
-                player.setX(player.getX()-2);
+                player.setX(player.getX()-player.getStep());
                 player.LEFT();
                 ++frame;
                 break;
         }
-        if(frame == 16 && typeEvent != 0){
+        if(frame == 32 / player.getStep() && typeEvent != 0){
             typeEvent = 0;
             frame = 0;
+            player.getItem(stillObjects);
         }
         if(!bom.isEmpty()){
             for(int i = 0; i < bom.size(); i++){
@@ -154,6 +160,7 @@ public class BombermanGame extends Application {
                     player.bomber_died(bom.get(i));
                 }
             }
+
         }
         // set text
         Menu.ener.setText("Enermy: "+enermy.size());
@@ -165,6 +172,6 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
         enermy.forEach(g->g.render(gc));
-        item.forEach(g->g.render(gc));
+        //item.forEach(g->g.render(gc));
     }
 }

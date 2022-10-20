@@ -2,16 +2,21 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Item.Item;
+import uet.oop.bomberman.Item.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.isPause;
+import static uet.oop.bomberman.entities.Bomb.frame_range;
 
 public class Bomber extends Entity {
     private int countToRun = 0;
     private int swap = 1;
     private int died = 1;
+
+    private int step = 2;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
@@ -24,6 +29,14 @@ public class Bomber extends Entity {
         this.swap = swap;
     }
 
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
     public void setCountToRun(int countToRun) {
         this.countToRun = countToRun;
     }
@@ -33,7 +46,7 @@ public class Bomber extends Entity {
     }
 
     public boolean checkRun(List stillObjects, int k){
-        return stillObjects.get(k) instanceof Grass;
+        return stillObjects.get(k) instanceof Grass || stillObjects.get(k) instanceof Item ;
     }
     public void UP(){
         if(y % 8 == 0) {
@@ -122,8 +135,8 @@ public class Bomber extends Entity {
     }
     public void bomber_died(Bomb bom){
         if(bom.isEx()){
-            if((x >= bom.getX() - 32 && x <= bom.getX() + 32 && y == bom.getY())
-                    || (x == bom.getX() && y <= bom.getY() + 32 && y >= bom.getY() - 32)){
+            if((x >= bom.getX() - 32 * frame_range && x <= bom.getX() + 32 * frame_range && y == bom.getY())
+                    || (x == bom.getX() && y <= bom.getY() + 32 * frame_range && y >= bom.getY() - 32 * frame_range)){
                 setDiedFame();
                 /*if(!bom.isEx()){
                     return true;
@@ -131,6 +144,13 @@ public class Bomber extends Entity {
             }
         }
         //return false;
+    }
+    public void getItem(List<Entity> stillObjects) {
+        if(stillObjects.get(x/32 + y/32 * 31) instanceof Item) {
+            ((Item)stillObjects.get(x/32 + y/32 * 31)).change(this);
+            Entity object = new Grass(x/32, y/32, Sprite.grass.getFxImage());
+            stillObjects.set(x/32 + (y/32)*31,object);
+        }
     }
     @Override
     public void update(){
