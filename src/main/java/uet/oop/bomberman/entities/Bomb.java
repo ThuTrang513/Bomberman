@@ -1,15 +1,11 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Item.BombItem;
-import uet.oop.bomberman.Item.FlameItem;
-import uet.oop.bomberman.Item.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import static uet.oop.bomberman.media.Media.playSound;
 
 public class Bomb extends Entity{
     private long timeSetBomb;
@@ -20,27 +16,27 @@ public class Bomb extends Entity{
     private int isSwap2 = 1;
     private int frame = 0;
 
-    public static int frame_range = 2;
     private Entity Middle = new ImageEntity(x/32,y/32,Sprite.bomb_exploded.getFxImage());
-    private Entity verticalUpLast = new ImageEntity(x/32,(y-32 * frame_range)/32,Sprite.explosion_vertical_top_last.getFxImage());
-    private Entity verticalDownLast = new ImageEntity(x/32,(y+32 * frame_range)/32,Sprite.explosion_vertical_down_last.getFxImage());
-    private Entity horizontalLeftLast = new ImageEntity((x-32 * frame_range)/32,y/32,Sprite.explosion_horizontal_left_last.getFxImage());
-    private Entity horizontalRightLast = new ImageEntity((x+32 * frame_range)/32,y/32,Sprite.explosion_horizontal_right_last.getFxImage());
-    private List<Entity> verticalUp = new ArrayList<>();
-    private List<Entity> verticalDown = new ArrayList<>();
-    private List<Entity> horizontalLeft = new ArrayList<>();
-    private List<Entity> horizontalRight = new ArrayList<>();
-
+    private Entity verticalUp = new ImageEntity(x/32,(y-32)/32,Sprite.explosion_vertical_top_last.getFxImage());
+    private Entity verticalDown = new ImageEntity(x/32,(y+32)/32,Sprite.explosion_vertical_down_last.getFxImage());
+    private Entity horizontalLeft = new ImageEntity((x-32)/32,y/32,Sprite.explosion_horizontal_left_last.getFxImage());
+    private Entity horizontalRight = new ImageEntity((x+32)/32,y/32,Sprite.explosion_horizontal_right_last.getFxImage());
 
     boolean hasEx = false;
-    boolean isEx = false;
+    public static boolean isEx = false;
     public Bomb(int x, int y, Image img, List entities){
         super(x, y, img);
         timeSetBomb = System.currentTimeMillis();
         isBomb = true;
-        this.horizontalImg();
-        this.verticalImg();
         /**/
+    }
+
+    public void setHasEx(boolean hasEx) {
+        this.hasEx = hasEx;
+    }
+
+    public static void setIsEx(boolean isEx) {
+        Bomb.isEx = isEx;
     }
 
     @Override
@@ -66,6 +62,7 @@ public class Bomb extends Entity{
     public boolean isEx() {
         return isEx;
     }
+
 
     public void init(int x, int y){
         super.setX(x);
@@ -96,75 +93,29 @@ public class Bomb extends Entity{
         }
     }
     private boolean checkWall(List stillObjects,int index){
-        if(index >= 0 && index < stillObjects.size()){
-            return stillObjects.get(index) instanceof Wall;
-        }
-        else return false;
-    }
-
-    private void verticalImg() {
-        for(int i = 1; i < frame_range; ++i) {
-            Entity up  = new ImageEntity(x/32,(y-32 * i)/32,Sprite.explosion_vertical.getFxImage());
-            Entity down = new ImageEntity(x/32,(y+32 * i)/32,Sprite.explosion_vertical.getFxImage());
-            verticalUp.add(up);
-            verticalDown.add(down);
-        }
-    }
-    private void horizontalImg() {
-        for(int i = 1; i < frame_range; ++i) {
-            Entity left  = new ImageEntity((x-32 * i)/32,y/32,Sprite.explosion_horizontal.getFxImage());
-            Entity right = new ImageEntity((x+32 * i)/32,y/32,Sprite.explosion_horizontal.getFxImage());
-            horizontalLeft.add(left);
-            horizontalRight.add(right);
-        }
+        return stillObjects.get(index) instanceof Wall;
     }
     private void setVertical(List stillObjects){
-        for (int i = 1; i < frame_range; ++ i){
-            if(!checkWall(stillObjects,x/32 + (y/32 - i) * 31)){
-                if(isSwap2 == 1){
-                    verticalUp.get(i-1).setImg(Sprite.explosion_vertical.getFxImage());
-                }
-                else if(isSwap2 == 2 || isSwap2 == 4){
-                    verticalUp.get(i-1).setImg(Sprite.explosion_vertical1.getFxImage());
-                }
-                else if(isSwap2 == 3){
-                    verticalUp.get(i-1).setImg(Sprite.explosion_vertical2.getFxImage());
-                }
-            }
-        }
-        if(!checkWall(stillObjects,x/32 + (y/32 - frame_range) * 31)){
+        if(!checkWall(stillObjects,x/32 + (y/32 - 1) * 31)){
             if(isSwap2 == 1){
-                verticalUpLast.setImg(Sprite.explosion_vertical_top_last.getFxImage());
+                verticalUp.setImg(Sprite.explosion_vertical_top_last.getFxImage());
             }
             else if(isSwap2 == 2 || isSwap2 == 4){
-                verticalUpLast.setImg(Sprite.explosion_vertical_top_last1.getFxImage());
+                verticalUp.setImg(Sprite.explosion_vertical_top_last1.getFxImage());
             }
             else if(isSwap2 == 3){
-                verticalUpLast.setImg(Sprite.explosion_vertical_top_last2.getFxImage());
+                verticalUp.setImg(Sprite.explosion_vertical_top_last2.getFxImage());
             }
         }
-        for (int i = 1; i < frame_range; ++ i){
-            if(!checkWall(stillObjects,x/32 + (y/32 + i) * 31)){
-                if(isSwap2 == 1){
-                    verticalDown.get(i-1).setImg(Sprite.explosion_vertical.getFxImage());
-                }
-                else if(isSwap2 == 2 || isSwap2 == 4){
-                    verticalDown.get(i-1).setImg(Sprite.explosion_vertical1.getFxImage());
-                }
-                else if(isSwap2 == 3){
-                    verticalDown.get(i-1).setImg(Sprite.explosion_vertical2.getFxImage());
-                }
-            }
-        }
-        if(!checkWall(stillObjects, x/32 + (y/32 + frame_range) * 31)){
+        if(!checkWall(stillObjects, x/32 + (y/32 + 1) * 31)){
             if(isSwap2 == 1){
-                verticalDownLast.setImg(Sprite.explosion_vertical_down_last.getFxImage());
+                verticalDown.setImg(Sprite.explosion_vertical_down_last.getFxImage());
             }
             else if(isSwap2 == 2 || isSwap2 == 4){
-                verticalDownLast.setImg(Sprite.explosion_vertical_down_last1.getFxImage());
+                verticalDown.setImg(Sprite.explosion_vertical_down_last1.getFxImage());
             }
             else if(isSwap2 == 3){
-                verticalDownLast.setImg(Sprite.explosion_vertical_down_last2.getFxImage());
+                verticalDown.setImg(Sprite.explosion_vertical_down_last2.getFxImage());
             }
         }
     }
@@ -180,204 +131,60 @@ public class Bomb extends Entity{
         }
     }
     private void setHorizon(List stillObjects){
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects,x/32 - i + (y/32) * 31)){
-                if(isSwap2 == 1){
-                    horizontalLeft.get(i-1).setImg(Sprite.explosion_horizontal.getFxImage());
-                }
-                else if(isSwap2 == 2 || isSwap2 == 4){
-                    horizontalLeft.get(i-1).setImg(Sprite.explosion_horizontal1.getFxImage());
-                }
-                else if(isSwap2 == 3){
-                    horizontalLeft.get(i-1).setImg(Sprite.explosion_horizontal2.getFxImage());
-                }
-            }
-        }
-        if(!checkWall(stillObjects,x/32 - frame_range + (y/32) * 31)){
+
+        if(!checkWall(stillObjects,x/32 - 1 + (y/32) * 31)){
 
             if(isSwap2 == 1){
-                horizontalLeftLast.setImg(Sprite.explosion_horizontal_left_last.getFxImage());
+                horizontalLeft.setImg(Sprite.explosion_horizontal_left_last.getFxImage());
             }
             else if(isSwap2 == 2 || isSwap2 == 4){
-                horizontalLeftLast.setImg(Sprite.explosion_horizontal_left_last1.getFxImage());
+                horizontalLeft.setImg(Sprite.explosion_horizontal_left_last1.getFxImage());
             }
             else if(isSwap2 == 3){
-                horizontalLeftLast.setImg(Sprite.explosion_horizontal_left_last2.getFxImage());
+                horizontalLeft.setImg(Sprite.explosion_horizontal_left_last2.getFxImage());
             }
         }
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects,x/32 + i + (y/32) * 31)){
-                if(isSwap2 == 1){
-                    horizontalRight.get(i-1).setImg(Sprite.explosion_horizontal.getFxImage());
-                }
-                else if(isSwap2 == 2 || isSwap2 == 4){
-                    horizontalRight.get(i-1).setImg(Sprite.explosion_horizontal1.getFxImage());
-                }
-                else if(isSwap2 == 3){
-                    horizontalRight.get(i-1).setImg(Sprite.explosion_horizontal2.getFxImage());
-                }
-            }
-        }
-        if(!checkWall(stillObjects, x/32 + frame_range + (y/32) * 31)){
+        if(!checkWall(stillObjects, x/32 + 1 + (y/32) * 31)){
             if(isSwap2 == 1){
-                horizontalRightLast.setImg(Sprite.explosion_horizontal_right_last.getFxImage());
+                horizontalRight.setImg(Sprite.explosion_horizontal_right_last.getFxImage());
             }
             else if(isSwap2 == 2 || isSwap2 == 4){
-                horizontalRightLast.setImg(Sprite.explosion_horizontal_right_last1.getFxImage());
+                horizontalRight.setImg(Sprite.explosion_horizontal_right_last1.getFxImage());
             }
             else if(isSwap2 == 3){
-                horizontalRightLast.setImg(Sprite.explosion_horizontal_right_last2.getFxImage());
+                horizontalRight.setImg(Sprite.explosion_horizontal_right_last2.getFxImage());
             }
         }
     }
 
     private void addEx(List entities,List stillObjects){
         entities.add(Middle);
-        int isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 + (y/32 - i) * 31)) {
-                entities.add(verticalUp.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 + (y/32 - i) * 31)){
-                    isStop = i;
-                    break;
-                    }
-                 */
-            }
-            else{
-                isStop = i;
-                break;
-            }
+        if(!checkWall(stillObjects, x/32 + (y/32 - 1) * 31)) {
+            entities.add(verticalUp);
         }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 + (y/32 - frame_range) * 31)) {
-            entities.add(verticalUpLast);
+        if(!checkWall(stillObjects, x/32 + (y/32 + 1) * 31)) {
+            entities.add(verticalDown);
         }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 + (y/32 + i) * 31)) {
-                entities.add(verticalDown.get(i-1));
-               /* if(checkBrick(stillObjects,x/32 + (y/32 + i) * 31)){
-                    isStop = i;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
+        if(!checkWall(stillObjects, x/32 - 1 + (y/32) * 31)) {
+            entities.add(horizontalLeft);
         }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 + (y/32 + frame_range) * 31)) {
-            entities.add(verticalDownLast);
-        }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 - i + (y/32) * 31)) {
-                entities.add(horizontalLeft.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 - i + (y/32) * 31)){
-                    isStop = i;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
-        }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 - frame_range + (y/32) * 31)) {
-            entities.add(horizontalLeftLast);
-        }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 + i + (y/32) * 31)) {
-                entities.add(horizontalRight.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 + i + (y/32) * 31)){
-                    isStop = 1;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
-        }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 + frame_range + (y/32) * 31)) {
-            entities.add(horizontalRightLast);
+        if(!checkWall(stillObjects, x/32 + 1 + (y/32) * 31)) {
+            entities.add(horizontalRight);
         }
     }
     private void removeEx(List entities,List stillObjects){
         entities.remove(Middle);
-        int isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 + (y/32 - i) * 31)) {
-                entities.remove(verticalUp.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 + (y/32 - i) * 31)){
-                    isStop = i;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
+        if(!checkWall(stillObjects, x/32 + (y/32 - 1) * 31)) {
+            entities.remove(verticalUp);
         }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 + (y/32 - frame_range) * 31)) {
-            entities.remove(verticalUpLast);
+        if(!checkWall(stillObjects, x/32 + (y/32 + 1) * 31)) {
+            entities.remove(verticalDown);
         }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 + (y/32 + i) * 31)) {
-                entities.remove(verticalDown.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 + (y/32 + i) * 31)){
-                    isStop = i;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
+        if(!checkWall(stillObjects, x/32 - 1 + (y/32) * 31)) {
+            entities.remove(horizontalLeft);
         }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 + (y/32 + frame_range) * 31)) {
-            entities.remove(verticalDownLast);
-        }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 - i + (y/32) * 31)) {
-                entities.remove(horizontalLeft.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 - i + (y/32) * 31)){
-                    isStop = i;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
-        }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 - frame_range + (y/32) * 31)) {
-            entities.remove(horizontalLeftLast);
-        }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(!checkWall(stillObjects, x/32 + i + (y/32) * 31)) {
-                entities.remove(horizontalRight.get(i-1));
-                /*if(checkBrick(stillObjects,x/32 + i + (y/32) * 31)){
-                    isStop = i;
-                    break;
-                }*/
-            }
-            else{
-                isStop = i;
-                break;
-            }
-        }
-        if(isStop == 0 && !checkWall(stillObjects, x/32 + frame_range + (y/32) * 31)) {
-            entities.remove(horizontalRightLast);
+        if(!checkWall(stillObjects, x/32 + 1 + (y/32) * 31)) {
+            entities.remove(horizontalRight);
         }
     }
     private void setExplosion(List stillObjects){
@@ -406,76 +213,27 @@ public class Bomb extends Entity{
         }
     }
     private boolean checkBrick(List stillObjects,int index){
-        if(index >= 0 && index < stillObjects.size()) {
-            return stillObjects.get(index) instanceof Brick;
-        }
-        return false;
+        return stillObjects.get(index) instanceof Brick;
     }
     private void changeImageMap(List stillObjects,int xVal,int yVal){
-        Random rand = new Random();
-        int ranNum = rand.nextInt(4) + 0;
-
-        Entity object;
-        if(ranNum == 0) {
-            object = new Grass(xVal/32, yVal/32, Sprite.grass.getFxImage());
-        }
-        else if(ranNum == 1) {
-            object = new SpeedItem(xVal/32, yVal/32, Sprite.powerup_speed.getFxImage());
-        }
-        else if(ranNum == 1) {
-            object = new FlameItem(xVal/32, yVal/32, Sprite.powerup_flames.getFxImage());
-        }
-        else{
-        object = new BombItem(xVal/32, yVal/32, Sprite.powerup_bombs.getFxImage());
-        }
+        Entity object = new Grass(xVal/32, yVal/32, Sprite.grass.getFxImage());
+        //stillObjects.remove(xVal/32 + (yVal/32)*31);
+        //stillObjects.add(xVal/32 + (yVal/32)*31);
         stillObjects.set(xVal/32 + (yVal/32)*31,object);
+        //System.out.println (xVal/32+(yVal/32)*31);
     }
-
-    void setGrass(List stillObjects){
-        int isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(checkBrick(stillObjects, x/32 + (y/32 - i) * 31)) {
-                changeImageMap(stillObjects,x,y-32 * i);
-                /*isStop = i;
-                break;*/
-            }
+    public void setGrass(List stillObjects){
+        if(checkBrick(stillObjects, x/32 + (y/32 - 1) * 31)) {
+            changeImageMap(stillObjects,x,y-32);
         }
-        if(isStop == 0 && checkBrick(stillObjects, x/32 + (y/32 - frame_range) * 31)) {
-            changeImageMap(stillObjects,x,y-32 * frame_range);
+        if(checkBrick(stillObjects, x/32 + (y/32 + 1) * 31)) {
+            changeImageMap(stillObjects,x,y+32);
         }
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(checkBrick(stillObjects, x/32 + (y/32 + i) * 31)) {
-                changeImageMap(stillObjects,x,y+32 * i);
-                /*isStop = i;
-                break;*/
-            }
+        if(checkBrick(stillObjects, x/32 - 1 + (y/32) * 31)) {
+            changeImageMap(stillObjects,x-32,y);
         }
-        if(isStop == 0 && checkBrick(stillObjects, x/32 + (y/32 + frame_range) * 31)) {
-            changeImageMap(stillObjects,x,y+32*frame_range);
-        }
-
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(checkBrick(stillObjects, x/32 - i + (y/32) * 31)) {
-                changeImageMap(stillObjects,x-32*i,y);
-                /*isStop = i;
-                break;*/
-            }
-        }
-        if(isStop == 0 && checkBrick(stillObjects, x/32 - frame_range + (y/32) * 31)) {
-            changeImageMap(stillObjects,x-32*frame_range,y);
-        }
-        isStop = 0;
-        for (int i = 1; i < frame_range; ++ i) {
-            if(checkBrick(stillObjects, x/32 + i + (y/32) * 31)) {
-                changeImageMap(stillObjects,x+32*i,y);
-                /*isStop = i;
-                break;*/
-            }
-        }
-        if(isStop == 0 && checkBrick(stillObjects, x/32 + frame_range + (y/32) * 31)) {
-            changeImageMap(stillObjects,x+32*frame_range,y);
+        if(checkBrick(stillObjects, x/32 + 1 + (y/32) * 31)) {
+            changeImageMap(stillObjects,x+32,y);
         }
     }
     public void explosion(List entities, List bomb,List stillObjects){
@@ -485,6 +243,7 @@ public class Bomb extends Entity{
         if( timer >= 3000){
             setExplosion(stillObjects);
             if(isEx == false){
+                playSound("src/main/resources/sound/explosion.wav");
                 entities.remove(this);
                 setGrass(stillObjects);
                 isEx = true;

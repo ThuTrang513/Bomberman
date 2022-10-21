@@ -1,37 +1,52 @@
-package uet.oop.bomberman.Level;
+package uet.oop.bomberman.level;
 
-import uet.oop.bomberman.Enermy.*;
-import uet.oop.bomberman.Item.FlameItem;
-import uet.oop.bomberman.Map.createMap;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import uet.oop.bomberman.map.CreateMap;
 import uet.oop.bomberman.Menu;
-import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
-import static uet.oop.bomberman.Media.Media.playSound;
-import static uet.oop.bomberman.Menu.level;
-import static uet.oop.bomberman.Menu.score;
+import static uet.oop.bomberman.item.Portal.isPortal;
+import static uet.oop.bomberman.Menu.*;
 
 
 public class Level1 {
+    public static int lv=0;
+    ImageView level1= new ImageView(new Image("E:/Github/Bomberman/src/main/resources/images/level 1.png"));
     public Level1(){
+        lv=1;
+        isPause=false;
+        isPortal=false;
+        entities.clear();
         enermy.clear();
         stillObjects.clear();
+        bom.clear();
+        media.forEach(e->{
+            e.close();
+        });
+        Menu.scoreInt=0;
+        level1.setScaleX(0.8);
+        level1.setScaleY(0.6);
+        level1.setTranslateX(0);
+        level1.setTranslateY(-238);
 
-        new createMap("src/main/resources/map/createMap.txt");
+
+        //grid.add(level1,1,1);
+        Menu.timeInt=300;
+        player=new Bomber(1,1,(Sprite.player_right.getFxImage()));
+        entities.add(player);
+        new CreateMap("src/main/resources/map/level1.txt");
+
         level.setText("Level 1");
-        Entity oneal1 = new Oneal(7, 7, Sprite.oneal_left1.getFxImage());
-        Entity balloom1 = new Balloom(14, 9, Sprite.balloom_left1.getFxImage());
-        Entity minvo=new Minvo(8,5,Sprite.minvo_left3.getFxImage());
-        Entity kondo= new Kondoria(4,5,Sprite.kondoria_left1.getFxImage());
-        Entity doll= new Doll(4,5,Sprite.doll_left2.getFxImage());
-        Entity flameUp=new FlameItem(2,3,Sprite.powerup_flames.getFxImage());
-        enermy.add(oneal1);
-        enermy.add(doll);
-        enermy.add(balloom1);
-        enermy.add(minvo);
-        enermy.add(kondo);
-        playSound("E:/Github/Bomberman/src/main/resources/sound/stage_theme.wav");
+
+        //Entity oneal1 = new Oneal(7, 7, Sprite.oneal_left1.getFxImage());
+        //Entity balloom1 = new Balloom(14, 9, Sprite.balloom_left1.getFxImage());
+
+        //enermy.add(oneal1);
+        //enermy.add(balloom1);
+        //grid.getChildren().addAll(score,level,ener,bomNum,time);
     }
 
 }

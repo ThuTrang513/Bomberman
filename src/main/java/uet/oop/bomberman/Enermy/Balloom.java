@@ -1,11 +1,10 @@
-package uet.oop.bomberman.Enermy;
+package uet.oop.bomberman.enermy;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Menu;
-import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.Menu.scoreInt;
 
 public class Balloom extends Enermy {
     int cntCircle=0,cntToDie=0;
@@ -37,6 +36,7 @@ public class Balloom extends Enermy {
             cntToDie++;
         } else{
             enermy.remove(this);
+            scoreInt+=10;
         }
     }
 

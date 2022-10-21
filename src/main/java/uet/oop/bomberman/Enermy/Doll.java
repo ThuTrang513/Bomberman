@@ -1,10 +1,10 @@
-package uet.oop.bomberman.Enermy;
+package uet.oop.bomberman.enermy;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Menu;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.enermy;
+import static uet.oop.bomberman.Menu.scoreInt;
 
 public class Doll extends Enermy{
     public Doll(int x, int y, Image image) {
@@ -37,6 +37,7 @@ public class Doll extends Enermy{
 
             enermy.add(new Balloom(x/32,y/32+1,Sprite.balloom_right1.getFxImage()));
             enermy.add(b);
+            scoreInt+=30;
 
         }
     }

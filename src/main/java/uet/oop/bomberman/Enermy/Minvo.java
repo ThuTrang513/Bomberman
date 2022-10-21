@@ -1,7 +1,6 @@
-package uet.oop.bomberman.Enermy;
+package uet.oop.bomberman.enermy;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Menu;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.enermy;

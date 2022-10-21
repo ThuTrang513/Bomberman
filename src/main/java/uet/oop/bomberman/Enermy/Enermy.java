@@ -1,10 +1,11 @@
-package uet.oop.bomberman.Enermy;
+package uet.oop.bomberman.enermy;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.media.Media.playSound;
 
 public abstract class Enermy extends Entity {
     boolean isDead=false;
@@ -12,10 +13,11 @@ public abstract class Enermy extends Entity {
         super(x,y,image);
     }
 
+
     public void colissBom() {
         bom.forEach(e->{
             if (e.isEx())
-                if ((Math.abs(x-e.getX())<64 && y==e.getY()) || (Math.abs(y- e.getY())<64 && x==e.getX())) {
+                if ((Math.abs(x-e.getX())<60 && y==e.getY()) || (Math.abs(y- e.getY())<60 && x==e.getX())) {
                     isDead=true;
                 }
         });
@@ -23,6 +25,7 @@ public abstract class Enermy extends Entity {
     public void colissBomber(){
         if ((Math.abs(x-player.getX())<33 && y==player.getY()) || (Math.abs(y- player.getY())<33 && x==player.getX())) {
             player.setDiedFame();
+            if (!isPause) playSound("src/main/resources/sound/player_die.wav");
             isPause=true;
         }
     }
@@ -46,4 +49,5 @@ public abstract class Enermy extends Entity {
     }
     public abstract void setDiedFame();
     public abstract void update();
+
 }
