@@ -11,7 +11,6 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.frame_range;
-import static uet.oop.bomberman.entities.Bomb.isEx;
 import static uet.oop.bomberman.item.Portal.isPortal;
 import static uet.oop.bomberman.Menu.*;
 

@@ -34,7 +34,7 @@ public class Bomb extends Entity{
 
 
     boolean hasEx = false;
-    public static boolean isEx = false;
+    boolean isEx = false;
     public Bomb(int x, int y, Image img, List entities){
         super(x, y, img);
         isEx=false;
