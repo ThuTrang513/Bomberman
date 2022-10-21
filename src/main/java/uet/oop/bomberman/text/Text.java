@@ -1,7 +1,6 @@
 package uet.oop.bomberman.text;
 
-import static uet.oop.bomberman.BombermanGame.enermy;
-import static uet.oop.bomberman.BombermanGame.isPause;
+import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.Menu.*;
 
 public class Text {
@@ -10,7 +9,7 @@ public class Text {
 
         score.setText("Score: " + scoreInt);
         ener.setText("\uD83D\uDC7B: " + enermy.size());
-        
+        bomNum.setText("Bom: " + bombNum);
         long now = System.currentTimeMillis();
         if (now - lastTime > 1000) {
             lastTime = System.currentTimeMillis();

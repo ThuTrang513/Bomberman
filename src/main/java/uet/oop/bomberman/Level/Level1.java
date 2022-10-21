@@ -3,6 +3,7 @@ package uet.oop.bomberman.level;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.map.CreateMap;
 import uet.oop.bomberman.Menu;
 import uet.oop.bomberman.entities.Bomber;
@@ -30,6 +31,7 @@ public class Level1 {
         stillObjects.clear();
         bom.forEach(e->{
             e.setIsEx(false);
+            //Bomb.timeSetBomb = System.currentTimeMillis();
         });
         bom.clear();
         media.forEach(e->{

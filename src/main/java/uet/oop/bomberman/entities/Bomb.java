@@ -37,6 +37,7 @@ public class Bomb extends Entity{
     public static boolean isEx = false;
     public Bomb(int x, int y, Image img, List entities){
         super(x, y, img);
+        isEx=false;
         timeSetBomb = System.currentTimeMillis();
         isBomb = true;
         this.horizontalImg();
@@ -48,8 +49,8 @@ public class Bomb extends Entity{
         this.hasEx = hasEx;
     }
 
-    public static void setIsEx(boolean isEx) {
-        Bomb.isEx = isEx;
+    public void setIsEx(boolean isEx) {
+        this.isEx = isEx;
     }
 
     @Override

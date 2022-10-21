@@ -81,7 +81,6 @@ public class BombermanGame extends Application {
                     }
                     break;
                 case SPACE:
-                    System.out.println(hasBomb+" "+bom.size()+" "+bombNum);
                     hasBomb = bom.size();
                     if(hasBomb < bombNum) {
                         Bomb newBom = new Bomb(player.getX()/32, player.getY()/32, Sprite.bomb.getFxImage(),entities);
@@ -129,22 +128,22 @@ public class BombermanGame extends Application {
         /** bomber run */
         switch(typeEvent){
             case 1:
-                player.setY(player.getY()-2);
+                player.setY(player.getY()-player.getStep());
                 player.UP();
                 ++frame;
                 break;
             case 2:
-                player.setY(player.getY()+2);
+                player.setY(player.getY()+player.getStep());
                 player.DOWN();
                 ++frame;
                 break;
             case 3:
-                player.setX(player.getX()+2);
+                player.setX(player.getX()+player.getStep());
                 player.RIGHT();
                 ++frame;
                 break;
             case 4:
-                player.setX(player.getX()-2);
+                player.setX(player.getX()-player.getStep());
                 player.LEFT();
                 ++frame;
                 break;
@@ -153,6 +152,14 @@ public class BombermanGame extends Application {
             typeEvent = 0;
             frame = 0;
             player.getItem(stillObjects);
+            if(player.getY() % 32 != 0) {
+                int tmp = player.getY();
+                player.setY(tmp - tmp % 32);
+            }
+            if(player.getX() % 32 != 0) {
+                int tmp = player.getX();
+                player.setX(tmp - tmp % 32);
+            }
         }
         if(!bom.isEmpty()){
             for(int i = 0; i < bom.size(); i++){
