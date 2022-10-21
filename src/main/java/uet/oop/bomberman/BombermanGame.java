@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.item.Portal;
 import uet.oop.bomberman.level.Level1;
 import uet.oop.bomberman.level.Next;
 import uet.oop.bomberman.text.Text;
@@ -37,6 +38,8 @@ public class BombermanGame extends Application {
     public static int typeEvent = 0;
     public static int frame;
     public static List<Bomb> bom = new ArrayList<>();
+    public static int bombNum = 1;
+    public static int hasBomb  = 0;
     public static Portal portal;
     public static List<Clip> media= new ArrayList<>();
 
@@ -78,10 +81,15 @@ public class BombermanGame extends Application {
                     }
                     break;
                 case SPACE:
-                    Bomb newBom = new Bomb(player.getX()/32, player.getY()/32, Sprite.bomb.getFxImage(),entities);
-                    entities.add(newBom);
-                    bom.add(newBom);
-                    playSound("src/main/resources/sound/place_bomb.wav");
+                    System.out.println(hasBomb+" "+bom.size()+" "+bombNum);
+                    hasBomb = bom.size();
+                    if(hasBomb < bombNum) {
+                        Bomb newBom = new Bomb(player.getX()/32, player.getY()/32, Sprite.bomb.getFxImage(),entities);
+                        entities.add(newBom);
+                        bom.add(newBom);
+                        ++hasBomb;
+                        playSound("src/main/resources/sound/place_bomb.wav");
+                    }
                     break;
                 /*case P:
                     isPause = !isPause;
@@ -116,7 +124,7 @@ public class BombermanGame extends Application {
 
     public void update() {
         enermy.forEach(Entity::update);
-        item.forEach(Entity::update);
+        //item.forEach(Entity::update);
         entities.forEach(Entity::update);
         /** bomber run */
         switch(typeEvent){
@@ -141,9 +149,10 @@ public class BombermanGame extends Application {
                 ++frame;
                 break;
         }
-        if(frame == 16 && typeEvent != 0){
+        if(frame == 32 / player.getStep() && typeEvent != 0){
             typeEvent = 0;
             frame = 0;
+            player.getItem(stillObjects);
         }
         if(!bom.isEmpty()){
             for(int i = 0; i < bom.size(); i++){
@@ -181,7 +190,7 @@ public class BombermanGame extends Application {
         if (isPortal) portal.render(gc);
         entities.forEach(g -> g.render(gc));
         enermy.forEach(g->g.render(gc));
-        item.forEach(g->g.render(gc));
+        //item.forEach(g->g.render(gc));
 
     }
 }

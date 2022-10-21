@@ -5,6 +5,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.entities.Bomb.frame_range;
 import static uet.oop.bomberman.media.Media.playSound;
 
 public abstract class Enermy extends Entity {
@@ -17,7 +18,7 @@ public abstract class Enermy extends Entity {
     public void colissBom() {
         bom.forEach(e->{
             if (e.isEx())
-                if ((Math.abs(x-e.getX())<60 && y==e.getY()) || (Math.abs(y- e.getY())<60 && x==e.getX())) {
+                if ((Math.abs(x-e.getX())<32*frame_range && y==e.getY()) || (Math.abs(y- e.getY())<32*frame_range && x==e.getX())) {
                     isDead=true;
                 }
         });
