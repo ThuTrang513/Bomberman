@@ -1,14 +1,24 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.item.Item;
 
 import java.util.List;
+
+import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.entities.Bomb.frame_range;
+import static uet.oop.bomberman.media.Media.playSound;
 
 public class Bomber extends Entity {
     private int countToRun = 0;
     private int swap = 1;
     private int died = 1;
+    private int step = 2;
+
+
+
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
@@ -21,6 +31,13 @@ public class Bomber extends Entity {
         this.swap = swap;
     }
 
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public int getStep() {
+        return step;
+    }
     public void setCountToRun(int countToRun) {
         this.countToRun = countToRun;
     }
@@ -30,8 +47,17 @@ public class Bomber extends Entity {
     }
 
     public boolean checkRun(List stillObjects, int k){
-        return stillObjects.get(k) instanceof Grass;
+        return stillObjects.get(k) instanceof Grass || stillObjects.get(k) instanceof Item;
     }
+    public boolean checkBomRun(int x_Val, int y_val){
+        for(int i = 0; i < bom.size(); ++i){
+                if (x_Val == bom.get(i).getX() && y_val == bom.get(i).getY() && isBombpass) {
+                    return false;
+                }
+        }
+        return true;
+    }
+
     public void UP(){
         if(y % 8 == 0) {
             if (getSwap() == 1) {
@@ -102,7 +128,8 @@ public class Bomber extends Entity {
             }
         }
     }
-    private void setDiedFame(){
+
+    public void setDiedFame(){
         if(died == 1){
             super.setImg(Sprite.player_dead1.getFxImage());
             died = 2;
@@ -114,19 +141,26 @@ public class Bomber extends Entity {
         else{
             super.setImg(Sprite.player_dead3.getFxImage());
             died = 1;
+            BombermanGame.isPause=true;
         }
     }
-    public boolean bomber_died(Bomb bom){
+    public void bomber_died(Bomb bom){
         if(bom.isEx()){
-            if((x >= bom.getX() - 32 && x <= bom.getX() + 32 && y == bom.getY())
-                    || (x == bom.getX() && y <= bom.getY() + 32 && y >= bom.getY() - 32)){
+            System.out.println(isFramepass);
+            if(bom.checkPlayer(this) && isFramepass){
+                playSound("src/main/resources/sound/player_die.wav");
                 setDiedFame();
-                if(!bom.isEx()){
-                    return true;
-                }
             }
         }
-        return false;
+        //return false;
+    }
+    public void getItem(List<Entity> stillObjects) {
+        if(stillObjects.get(x/32 + y/32 * 31) instanceof Item) {
+            ((Item)stillObjects.get(x/32 + y/32 * 31)).change(this);
+            item.add(stillObjects.get(x/32 + y/32 * 31) );
+            Entity object = new Grass(x/32, y/32, Sprite.grass.getFxImage());
+            stillObjects.set(x/32 + (y/32)*31,object);
+        }
     }
     @Override
     public void update(){

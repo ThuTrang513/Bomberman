@@ -10,9 +10,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="test" />
+        <module name="Bomberman" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Bomberman" target="18" />
       <module name="test" target="18" />
     </bytecodeTargetLevel>
   </component>
