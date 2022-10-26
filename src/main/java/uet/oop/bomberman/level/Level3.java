@@ -7,13 +7,15 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.BombermanGame.player;
+import static uet.oop.bomberman.Menu.*;
+import static uet.oop.bomberman.Menu.time;
 import static uet.oop.bomberman.item.Portal.isPortal;
-import static uet.oop.bomberman.Menu.level;
 
 public class Level3 {
      Level3() {
          Level1.lv=3;
          isPause=false;
+         grid.getChildren().addAll(score,ener,bomNum,time,level);
          isPortal=false;
          entities.clear();
          enermy.clear();

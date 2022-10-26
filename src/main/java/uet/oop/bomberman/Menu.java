@@ -33,7 +33,7 @@ public class Menu {
     public static Label level = new Label("Level");
     public static ImageView black;
     public static ImageView menu;
-    public static ImageView gameOver= new ImageView("E:/Github/Bomberman/src/main/resources/images/gameOver.png");
+    public static ImageView gameOver= new ImageView("images/gameOver.png");
     public static GridPane grid = new GridPane();
 
     static int cnt=0;
@@ -204,6 +204,7 @@ public class Menu {
     public static void gameover(Stage stage) {
         if (cnt==39) {
             grid.getChildren().removeAll(canvas, black);
+            grid.getChildren().removeAll(score,ener,bomNum,time,level);
             grid.getChildren().add(gameOver);
         }
         cnt++;

@@ -21,6 +21,7 @@ public class Level1 {
     public Level1(){
         lv=1;bombNum = 1;
         frame_range=1;
+        grid.getChildren().addAll(score,ener,bomNum,time,level);
 
         BombermanGame.hasBomb=0;
         isPause=false;

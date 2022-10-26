@@ -19,7 +19,6 @@ public class Text {
             if (timeInt < 0) isPause=true;
         }
     }
-    public static void removeText(){
-       // grid.getChildren().removeAll()
+    public void removeText(){
     }
 }
