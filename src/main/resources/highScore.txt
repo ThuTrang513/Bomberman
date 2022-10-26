@@ -1,0 +1,6 @@
+bin 200
+x 20
+hhhhh 10
+x 10
+Binh 10
+hhh 0
