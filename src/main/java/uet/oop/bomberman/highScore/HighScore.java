@@ -81,6 +81,7 @@ public class HighScore  {
         }
     }
     public static void writeHighScore(){
+        HighScore newScore = new HighScore("",scoreInt);
 
         if (scores.size()<7 || scores.get(scores.size() - 1).score < scoreInt) {
             TextField high=new TextField("Write your name");
@@ -97,42 +98,51 @@ public class HighScore  {
             l.setFont(Font.font("Arial Black",20));
             l.setTranslateY(100);
             l.setTranslateX(30);
+
+            scores.add(newScore);
+            Collections.sort(scores, new Comparator<HighScore>() {
+                public int compare(HighScore hs1, HighScore hs2) {
+                    return hs2.getScore() - hs1.getScore();
+                }
+            });
+            while (scores.size() >= 7) scores.remove(scores.size() - 1);
+            l.setText("         You rank " + ((int) scores.lastIndexOf(newScore) + 1) + " in HighScore board           ");
+            scores.remove(newScore);
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent e)
                 {
-                    HighScore hs= new HighScore(b.getText(), scoreInt);
-                    scores.add(hs);
-                    Collections.sort(scores, new Comparator<HighScore>() {
-                        public int compare(HighScore hs1, HighScore hs2){
-                            return  hs2.getScore()-hs1.getScore() ;
+                        HighScore hs= new HighScore(b.getText(), scoreInt);
+                        scores.add(hs);
+                        Collections.sort(scores, new Comparator<HighScore>() {
+                            public int compare(HighScore hs1, HighScore hs2) {
+                                return hs2.getScore() - hs1.getScore();
+                            }
+                        });
+                        //while (scores.size() >= 7) scores.remove(scores.size() - 1);
+                        l.setText("         You rank " + ((int) scores.lastIndexOf(hs) + 1) + " in HighScore board           ");
+                        try {
+                            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/highScore.txt"));
+                            String ss = "";
+                            for (int i = 0; i < scores.size(); i++) {
+                                ss += scores.get(i).name + " " + scores.get(i).score + "\n";
+                            }
+                            writer.write(ss, 0, ss.length());
+                            writer.close();
+                            System.out.println(ss);
+                        } catch (IOException ex) {
+                            System.out.println("Error writing");
                         }
-                    });
-                    while (scores.size()>=7) scores.remove(scores.size()-1);
-                    l.setText("         You rank "+((int)scores.lastIndexOf(hs)+1)+" in HighScore board           ");
-                    try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/highScore.txt"));
-                    String ss="";
-                    for (int i = 0; i < scores.size(); i++) {
-                        ss+=scores.get(i).name + " " + scores.get(i).score + "\n";
-                    }
-                    writer.write(ss,0,ss.length());
-                    writer.close();
-                    System.out.println(ss);
-                    } catch (IOException ex) {
-                        System.out.println("Error writing");
-                    }
+                        s.close();
+
                 }
             };
             b.setOnAction(event);
-            //b.setTranslateY(300);
             Pane x= new Pane();
             x.setEffect(new ColorInput(0,0,600,500,new LinearGradient(0,0,0,1,true,
                     CycleMethod.NO_CYCLE,
                     new Stop(0.1f, Color.rgb(25, 200, 0, .4)),
                     new Stop(1.0f, Color.rgb(0, 0, 0, .1)))));
             //b.setEffect(new ColorInput(0,0,b.getWidth(),b.getHeight(),Color.RED));
-            //ImageView im=new ImageView(new Image("E:/Github/Bomberman/src/main/resources/textures/2.png"));
-            //x.getChildren().add(im);
             r.getChildren().add(x);
             r.getChildren().add(b);
             r.getChildren().add(l);

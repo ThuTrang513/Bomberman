@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import static javafx.scene.paint.Color.WHITE;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.BombermanGame.canvas;
+import static uet.oop.bomberman.highScore.HighScore.scores;
 import static uet.oop.bomberman.level.Level1.lv;
 import static uet.oop.bomberman.media.Media.playSound;
 
@@ -156,11 +157,7 @@ public class Menu {
         });
 
         highScore.setOnMouseClicked(e->{
-            //primaryStage.close();
             ImageView black =new ImageView(new Image("textures/HighScore board.png"));
-            //black.setTranslateX(0.9);
-            //black.setTranslateY(0.9);
-//black.setSmooth(true);
             grid.add(black,0,0);
             ImageView back=new ImageView(new Image("textures/back.png"));
             //back.setTranslateX(-30);
@@ -225,6 +222,7 @@ public class Menu {
                 entities.clear();
                 enermy.clear();
                 lv=0;
+                if (scoreInt>scores.get(scores.size() - 1).getScore() || scores.size()<6)
                 HighScore.writeHighScore();
             }
     }

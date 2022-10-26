@@ -1,5 +1,4 @@
 bin 200
-kk 10
-ha 0
-kk 0
-yeye 0
+x 20
+hhhhh 10
+x 10
