@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.highScore.HighScore;
 import uet.oop.bomberman.item.Portal;
 import uet.oop.bomberman.level.Level1;
 import uet.oop.bomberman.level.Next;
@@ -55,8 +56,8 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(Menu.createMenu(stage));
         stage.setScene(scene);
-        //portal
-        //test
+        //highScore
+        HighScore.readHighScoreFile();
         player = new Bomber(1, 1, Sprite.player_right.getFxImage());
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()){
@@ -90,9 +91,6 @@ public class BombermanGame extends Application {
                         playSound("src/main/resources/sound/place_bomb.wav");
                     }
                     break;
-                /*case P:
-                    isPause = !isPause;
-                    break;*/
             }
         });
 

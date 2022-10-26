@@ -18,7 +18,7 @@ public abstract class Enermy extends Entity {
     public void colissBom() {
         bom.forEach(e->{
             if (e.isEx())
-                if ((Math.abs(x-e.getX())<32*frame_range && y==e.getY()) || (Math.abs(y- e.getY())<32*frame_range && x==e.getX())) {
+                if ((Math.abs(x-e.getX())<32*frame_range+30 && y==e.getY()) || (Math.abs(y- e.getY())<32*frame_range+30 && x==e.getX())) {
                     isDead=true;
                 }
         });

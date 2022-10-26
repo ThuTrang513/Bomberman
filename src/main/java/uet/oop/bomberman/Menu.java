@@ -1,13 +1,20 @@
 package uet.oop.bomberman;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import uet.oop.bomberman.highScore.HighScore;
 import uet.oop.bomberman.level.Level1;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -26,7 +33,7 @@ public class Menu {
     public static int scoreInt=0;
     public static Label time = new Label("⏰ ");
     public static int timeInt;
-    public static Label bomNum = new Label("Bom ");
+    public static Text bomNum = new Text("Bom ");
 
     public static Label ener = new Label("Enermy: ");
     public static Label level = new Label("Level");
@@ -47,7 +54,7 @@ public class Menu {
         Image newGame = new Image("E:/Github/Bomberman/src/main/resources/textures/play.png");
         menu = new ImageView(newGame);
         menu.setTranslateX(360);
-        menu.setTranslateY(-100);
+        menu.setTranslateY(-150);
         menu.setScaleX(0.5);
         menu.setScaleY(0.5);
 
@@ -60,7 +67,7 @@ public class Menu {
         newGame = new Image("E:/Github/Bomberman/src/main/resources/textures/instruction.png");
         ImageView help = new ImageView(newGame);
         help.setTranslateX(360);
-        help.setTranslateY(-20);
+        help.setTranslateY(-70);
         help.setScaleX(0.5);
         help.setScaleY(0.5);
         help.setOnMouseEntered(e->{
@@ -69,10 +76,24 @@ public class Menu {
         help.setOnMouseExited(e->{
             help.setImage(new Image("E:/Github/Bomberman/src/main/resources/textures/instruction.png"));
         });
+        newGame = new Image("E:/Github/Bomberman/src/main/resources/textures/highScore1.png");
+        ImageView highScore = new ImageView(newGame);
+        highScore.setTranslateX(360);
+        highScore.setTranslateY(13);
+        highScore.setScaleX(0.5);
+        highScore.setScaleY(0.5);
+        highScore.setOnMouseEntered(e->{
+            highScore.setImage(new Image("E:/Github/Bomberman/src/main/resources/textures/highScore2.png"));
+        });
+        highScore.setOnMouseExited(e->{
+            highScore.setImage(new Image("E:/Github/Bomberman/src/main/resources/textures/highScore1.png"));
+        });
+
+
         newGame = new Image("E:/Github/Bomberman/src/main/resources/textures/exit.png");
         ImageView exit = new ImageView(newGame);
         exit.setTranslateX(360);
-        exit.setTranslateY(60);
+        exit.setTranslateY(90);
         exit.setScaleX(0.5);
         exit.setScaleY(0.5);
         exit.setOnMouseEntered(e->{
@@ -81,13 +102,14 @@ public class Menu {
         exit.setOnMouseExited(e->{
             exit.setImage(new Image("E:/Github/Bomberman/src/main/resources/textures/exit.png"));
         });
+
         newGame=new Image("E:/Github/Bomberman/src/main/resources/images/volumeOn.png");
         ImageView sound = new ImageView(newGame);
         sound.setLayoutX(0);
         sound.setTranslateY(-180);
         sound.setScaleX(0.2);
         sound.setScaleY(0.2);
-        grid.getChildren().addAll(menu,help,exit,sound);
+        grid.getChildren().addAll(menu,help,highScore,sound,exit);
         black= new ImageView("E:/Github/Bomberman/src/main/resources/images/blackBackground.png");
 
         grid.setMaxWidth(Sprite.SCALED_SIZE*WIDTH);
@@ -128,8 +150,29 @@ public class Menu {
             });
         });
 
-        exit.setOnMouseClicked(e->{
+
+        exit.setOnMouseClicked(e-> {
             primaryStage.close();
+        });
+
+        highScore.setOnMouseClicked(e->{
+            //primaryStage.close();
+            ImageView black =new ImageView(new Image("textures/HighScore board.png"));
+            //black.setTranslateX(0.9);
+            //black.setTranslateY(0.9);
+//black.setSmooth(true);
+            grid.add(black,0,0);
+            ImageView back=new ImageView(new Image("textures/back.png"));
+            //back.setTranslateX(-30);
+            back.setTranslateY(-200);
+            back.setScaleX(0.3);
+            back.setScaleY(0.3);
+            grid.getChildren().add(back);
+            HighScore.show();
+            back.setOnMouseClicked(x->{
+                grid.getChildren().removeAll(back,black);
+                HighScore.removeText();
+            });
         });
 
         return grid;
@@ -156,9 +199,9 @@ public class Menu {
         ener.setTranslateX(320);
         ener.setTranslateY(-238);
 
-        bomNum=new Label("bomNum");
+        bomNum=new Text("bomNum");
         bomNum.setFont(new Font("Arial", 30));
-        bomNum.setTextFill(Color.web("#FFFFFF"));
+        bomNum.setFill(Color.web("#FFFFFF"));
         bomNum.setTranslateX(500);
         bomNum.setTranslateY(-238);
 
@@ -182,6 +225,7 @@ public class Menu {
                 entities.clear();
                 enermy.clear();
                 lv=0;
+                HighScore.writeHighScore();
             }
     }
 }

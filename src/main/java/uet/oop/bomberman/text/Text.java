@@ -9,7 +9,7 @@ public class Text {
 
         score.setText("Score: " + scoreInt);
         ener.setText("\uD83D\uDC7B: " + enermy.size());
-        bomNum.setText("Bom: " + bombNum);
+        bomNum.setText("\uD83D\uDCA5 " + bombNum);
         long now = System.currentTimeMillis();
         if (now - lastTime > 1000) {
             lastTime = System.currentTimeMillis();
