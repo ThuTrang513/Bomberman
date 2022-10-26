@@ -15,7 +15,7 @@ public class Level3 {
      Level3() {
          Level1.lv=3;
          isPause=false;
-         grid.getChildren().addAll(score,ener,bomNum,time,level);
+         //grid.getChildren().addAll(score,ener,bomNum,time,level);
          isPortal=false;
          entities.clear();
          enermy.clear();

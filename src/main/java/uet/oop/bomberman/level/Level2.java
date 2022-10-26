@@ -15,7 +15,7 @@ import static uet.oop.bomberman.BombermanGame.enermy;
 public class Level2 {
     Level2(){
         Level1.lv=2;
-        grid.getChildren().addAll(score,ener,bomNum,time,level);
+        //grid.getChildren().addAll(score,ener,bomNum,time,level);
         isPause=false;
         isPortal=false;
         entities.clear();

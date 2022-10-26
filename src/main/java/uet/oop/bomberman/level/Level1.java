@@ -49,6 +49,7 @@ public class Level1 {
         new CreateMap("src/main/resources/map/level1.txt");
 
         level.setText("Level 1");
+        //enermy.clear();
     }
 
 }
